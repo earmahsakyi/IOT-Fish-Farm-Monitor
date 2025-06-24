@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fish Farm IOT Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: url('{% static "myapp/image/background.webp" %}') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #006699;
+        }
+
+        .status {
+            margin-bottom: 20px;
+        }
+
+        .status b {
+            color: #333;
+        }
+
+        .controls a {
+            text-decoration: none;   
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #fff;
+        }
+
+        .controls a.on { background-color: #28a745; }
+        .controls a.off { background-color: #dc3545; }
+        .controls a.red { background-color: #ff0000; }
+        .controls a.green { background-color: #28a745; }
+        .controls a.blue { background-color: #007bff; }
+        .controls a.beep { background-color: #ffc107; }
+        .controls a:hover {
+            opacity: 0.8;
+        }
+
+        .refresh {
+            margin-top: 20px;
+        }
+
+        .sensors {
+            margin-top: 20px;
+        }
+
+        .sensors p {
+            font-size: 18px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .sensors i {
+            margin-right: 10px;
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        <h1>PORTS STATUS</h1>
+
+        <div class="status">
+            <b>P0 :</b> {{ p0_status }}
+            <div class="controls">
+                Change status to:
+                <a href="{% url 'myapp:index' %}?p0_status=ON" class="on">ON</a>
+                <a href="{% url 'myapp:index' %}?p0_status=OFF" class="off">OFF</a>
+            </div>
+        </div>
+
+        <div class="status">
+            <b>RELAY :</b> {{ relay_status }}
+            <div class="controls">
+                Change status to:
+                <a href="{% url 'myapp:index' %}?relay_status=ON" class="on">ON</a>
+                <a href="{% url 'myapp:index' %}?relay_status=OFF" class="off">OFF</a>
+            </div>
+        </div>
+
+        <div class="status">
+            <b>LED :</b> {{ led_status }}
+            <div class="controls">
+                Change color to:
+                <a href="{% url 'myapp:index' %}?led_status=OFF" class="off">OFF</a>
+                <a href="{% url 'myapp:index' %}?led_status=RED" class="red">RED</a>
+                <a href="{% url 'myapp:index' %}?led_status=GREEN" class="green">GREEN</a>
+                <a href="{% url 'myapp:index' %}?led_status=BLUE" class="blue">BLUE</a>
+            </div>
+        </div>
+
+        <div class="status">
+            <b>BUZZER :</b> OFF
+            <div class="controls">
+                <a href="{% url 'myapp:index' %}?buzzer=BUZZER" class="beep">Beep</a>
+            </div>
+        </div>
+
+        <div class="sensors">
+            <h2>Sensors:</h2>
+            <p><i class="fas fa-water"></i> Turbidity: {{ sensors.turbidity }}</p>
+            <p><i class="fas fa-thermometer-half"></i> Temperature: {{ sensors.temperature }}&#8451;</p>
+            <p><i class="fas fa-ruler-vertical"></i> Water Level: {{ sensors.water_level }}</p>
+            <p><i class="fas fa-wave-square"></i> Motion Detection: {{ sensors.motion_detection }}</p>
+        </div>
+
+        <div class="refresh">
+            <a href="{% url 'myapp:index' %}?p0_status={{ p0_status }}&relay_status={{ relay_status }}&led_status={{ led_status }}" class="on">Refresh</a>
+        </div>
+        {% endblock %}
+    </div>
+</body>
+</html>
